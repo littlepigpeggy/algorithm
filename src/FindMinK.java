@@ -1,20 +1,25 @@
+import java.util.Arrays;
+
+// 在一个不等的数组中找第K个数
 public class FindMinK {
 
     public static int findMinK(int[] arr, int L, int R, int k) {
-        if (L < R) {
-            int[] res = partition(arr, L, R);
-            if (k < res[0] - L + 1) {
-                findMinK(arr, L, res[0], k);
-            } else if (res[0] - L + 1 <= k && k <= res[1] - L + 1) {
-                return arr[res[0] + 1];
+        if (L >= R) {
+            return arr[L];
+        } else {
+            int less = partition(arr, L, R);
+            if (k == less + 2) {
+                return arr[less + 1];
+            } else if (k < less + 2) {
+                return findMinK(arr, L, less, k);
             } else {
-                findMinK(arr, res[1], R, k - res[0] + L - 2);
+                return findMinK(arr, less + 2, R, k - less - 2);
             }
         }
-        return -1;
     }
 
-    public static int[] partition(int[] arr, int L, int R) {
+    // 按照某一个元素划分
+    public static int partition(int[] arr, int L, int R) {
         int num = arr[(int) (L + (R - L + 1) * Math.random())];
         int less = L - 1;
         int more = R + 1;
@@ -28,7 +33,7 @@ public class FindMinK {
                 i++;
             }
         }
-        return new int[]{less, more};
+        return less;
     }
 
     public static void swap(int[] arr, int i, int j) {
@@ -37,8 +42,31 @@ public class FindMinK {
         arr[j] = tmp;
     }
 
+    public static int rightMethod(int[] arr, int k) {
+        Arrays.sort(arr);
+        return arr[k - 1];
+    }
+
+    public static int[] generateRandomArray(int size, int value) {
+        //生成一个1-size大小的数组
+        int[] arr = new int[(int) ((size * Math.random()) + 1)];
+        for (int i = 0; i < arr.length; ++i) {
+            //两个随机数相减，使其可能出现负数
+            arr[i] = (int) ((value + 1) * Math.random()) - (int) (value * Math.random());
+        }
+        return arr;
+    }
+
+    public static void printArray(int[] arr) {
+        for (int i = 0; i < arr.length; ++i)
+            System.out.print(arr[i] + " ");
+    }
+
     public static void main(String[] args) {
         int[] arr = {1, 2, 3, 4, 5};
-        System.out.print(findMinK(arr, 0, arr.length - 1, 2));
+        final int k = 3;
+
+        System.out.print(findMinK(arr, 0, arr.length - 1, k));
+        System.out.print(rightMethod(arr, k));
     }
 }
