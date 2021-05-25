@@ -1,2 +1,15 @@
-# algorithm
-算法刷题记录
+### This repo is about algorithm.
+
+-----
+
+**Record and summarize the questions about algorithm, mainly about leetcode.**
+
+- src
+
+  - Array
+  - Tree
+
+  - String
+  - DP
+  - Tricks
+  - ...
